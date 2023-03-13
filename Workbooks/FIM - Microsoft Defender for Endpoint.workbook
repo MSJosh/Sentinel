@@ -1,0 +1,309 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "crossComponentResources": [
+          "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+        ],
+        "parameters": [
+          {
+            "id": "78a4a061-f447-4beb-afd6-63a2a1609d77",
+            "version": "KqlParameterItem/1.0",
+            "name": "DeviceName",
+            "label": "Device Name",
+            "type": 2,
+            "isGlobal": true,
+            "multiSelect": true,
+            "quote": "'",
+            "delimiter": ",",
+            "query": "DeviceRegistryEvents\n| project DeviceName | distinct DeviceName\n| order by DeviceName asc",
+            "crossComponentResources": [
+              "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+            ],
+            "typeSettings": {
+              "additionalResourceOptions": [
+                "value::all"
+              ],
+              "selectAllValue": "*",
+              "showDefault": false
+            },
+            "timeContext": {
+              "durationMs": 2592000000
+            },
+            "defaultValue": "value::all",
+            "queryType": 0,
+            "resourceType": "microsoft.operationalinsights/workspaces"
+          },
+          {
+            "id": "4221d6d3-3916-4f4f-b46a-632ff2428d84",
+            "version": "KqlParameterItem/1.0",
+            "name": "TimeRange",
+            "type": 4,
+            "isRequired": true,
+            "isGlobal": true,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 300000
+                },
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                },
+                {
+                  "durationMs": 1209600000
+                },
+                {
+                  "durationMs": 2419200000
+                },
+                {
+                  "durationMs": 2592000000
+                },
+                {
+                  "durationMs": 5184000000
+                },
+                {
+                  "durationMs": 7776000000
+                }
+              ],
+              "allowCustom": true
+            },
+            "timeContext": {
+              "durationMs": 2592000000
+            },
+            "value": {
+              "durationMs": 2592000000
+            }
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces"
+      },
+      "name": "parameters - 1"
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "DeviceFileEvents \r\n| where FolderPath == \"C:\\\\autoexec.bat\"\r\nor FolderPath == \"C:\\\\boot.ini\"\r\nor FolderPath == \"C:\\\\config.sys\"\r\nor FolderPath == \"C:\\\\Program Files\\\\Microsoft Security Client\\\\msseces.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\explorer.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\regedit.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\system.ini\"\r\nor FolderPath == \"C:\\\\Windows\\\\System32\\\\userinit.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\win.ini\"\r\n| where DeviceName in ({DeviceName}) or '*' in({DeviceName})\r\n| union (DeviceRegistryEvents\r\n| where RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Classes\\\\Directory\\\\Background\\\\ShellEx\\\\ContextMenuHandlers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Classes\\\\Directory\\\\ShellEx\\\\ContextMenuHandlers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Classes\\\\Directory\\\\Shellex\\\\CopyHookHandlers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Active Setup\\\\Installed Components\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Internet Explorer\\\\Extensions\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Drivers32\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\\\\Notify\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Browser Helper Objects\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\ShellIconOverlayIdentifiers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Group Policy\\\\Scripts\\\\Shutdown\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Group Policy\\\\Scripts\\\\Startup\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Internet Explorer\\\\Extensions\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Drivers32\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Browser Helper Objects\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\ShellIconOverlayIdentifiers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{603BCC1F-4B59-4E08-B724-D2C6297EF351}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{C689AAB8-8E78-11D0-8C47-00C04FC295EE}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\IniFileMapping\\\\SYSTEM.ini\\\\boot\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Windows\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\User Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnceEx\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServices\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServicesOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{603BCC1F-4B59-4E08-B724-D2C6297EF351}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{C689AAB8-8E78-11D0-8C47-00C04FC295EE}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\IniFileMapping\\\\system.ini\\\\boot\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Windows\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\User Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnceEx\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServices\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServicesOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\hivelist\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\KnownDLLs\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\DomainProfile\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\PublicProfile\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\StandardProfile\")\r\n| summarize count() by ActionType, startofday(TimeGenerated)",
+        "size": 0,
+        "timeContextFromParameter": "TimeRange",
+        "queryType": 0,
+        "resourceType": "microsoft.operationalinsights/workspaces",
+        "crossComponentResources": [
+          "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+        ],
+        "visualization": "areachart"
+      },
+      "name": "query - 3"
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "# Registry Changes"
+            },
+            "name": "text - 3"
+          },
+          {
+            "type": 9,
+            "content": {
+              "version": "KqlParameterItem/1.0",
+              "crossComponentResources": [
+                "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+              ],
+              "parameters": [
+                {
+                  "id": "7868dbbf-14f5-4cc0-85d2-ea29d4dafcb0",
+                  "version": "KqlParameterItem/1.0",
+                  "name": "RegActionType",
+                  "label": "Action Type",
+                  "type": 2,
+                  "isRequired": true,
+                  "isGlobal": true,
+                  "multiSelect": true,
+                  "quote": "'",
+                  "delimiter": ",",
+                  "query": "DeviceRegistryEvents\r\n| project ActionType | distinct ActionType\r\n| order by ActionType asc",
+                  "crossComponentResources": [
+                    "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+                  ],
+                  "typeSettings": {
+                    "additionalResourceOptions": [
+                      "value::all"
+                    ],
+                    "selectAllValue": "*",
+                    "showDefault": false
+                  },
+                  "timeContext": {
+                    "durationMs": 2592000000
+                  },
+                  "timeContextFromParameter": "TimeRange",
+                  "defaultValue": "value::all",
+                  "queryType": 0,
+                  "resourceType": "microsoft.operationalinsights/workspaces"
+                }
+              ],
+              "style": "pills",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
+            },
+            "name": "parameters - 5"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "DeviceRegistryEvents\r\n| where RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Classes\\\\Directory\\\\Background\\\\ShellEx\\\\ContextMenuHandlers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Classes\\\\Directory\\\\ShellEx\\\\ContextMenuHandlers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Classes\\\\Directory\\\\Shellex\\\\CopyHookHandlers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Active Setup\\\\Installed Components\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Internet Explorer\\\\Extensions\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Drivers32\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\\\\Notify\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Browser Helper Objects\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\ShellIconOverlayIdentifiers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Group Policy\\\\Scripts\\\\Shutdown\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Group Policy\\\\Scripts\\\\Startup\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Internet Explorer\\\\Extensions\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Drivers32\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Browser Helper Objects\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\Software\\\\Wow6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\ShellIconOverlayIdentifiers\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{603BCC1F-4B59-4E08-B724-D2C6297EF351}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{C689AAB8-8E78-11D0-8C47-00C04FC295EE}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\IniFileMapping\\\\SYSTEM.ini\\\\boot\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Windows\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\User Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnceEx\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServices\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServicesOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{603BCC1F-4B59-4E08-B724-D2C6297EF351}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Cryptography\\\\OID\\\\EncodingType 0\\\\CryptSIPDllRemoveSignedDataMsg\\\\{C689AAB8-8E78-11D0-8C47-00C04FC295EE}\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\IniFileMapping\\\\system.ini\\\\boot\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Windows\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows NT\\\\CurrentVersion\\\\Winlogon\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Explorer\\\\User Shell Folders\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunOnceEx\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServices\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\WOW6432Node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\RunServicesOnce\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\hivelist\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Session Manager\\\\KnownDLLs\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\DomainProfile\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\PublicProfile\"\r\nor RegistryKey startswith \"HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\SharedAccess\\\\Parameters\\\\FirewallPolicy\\\\StandardProfile\"\r\n| where DeviceName in ({DeviceName}) or '*' in({DeviceName})\r\n| where ActionType in ({RegActionType}) or '*' in({RegActionType})\r\n| project Timestamp, DeviceName, ActionType, RegistryValueType, RegistryKey, PreviousRegistryKey, RegistryValueName, PreviousRegistryValueName, RegistryValueData, PreviousRegistryValueData, InitiatingProcessFileName, InitiatingProcessId, InitiatingProcessFolderPath, InitiatingProcessAccountDomain, InitiatingProcessAccountName, InitiatingProcessAccountObjectId, InitiatingProcessAccountUpn\r\n",
+              "size": 0,
+              "showAnalytics": true,
+              "timeContextFromParameter": "TimeRange",
+              "showExportToExcel": true,
+              "exportToExcelOptions": "all",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+              ],
+              "gridSettings": {
+                "filter": true
+              }
+            },
+            "name": "query - 0",
+            "styleSettings": {
+              "showBorder": true
+            }
+          }
+        ]
+      },
+      "name": "Registry Changes",
+      "styleSettings": {
+        "padding": "10px",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 12,
+      "content": {
+        "version": "NotebookGroup/1.0",
+        "groupType": "editable",
+        "items": [
+          {
+            "type": 1,
+            "content": {
+              "json": "# File Changes"
+            },
+            "name": "text - 4"
+          },
+          {
+            "type": 9,
+            "content": {
+              "version": "KqlParameterItem/1.0",
+              "crossComponentResources": [
+                "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+              ],
+              "parameters": [
+                {
+                  "id": "2f1431e3-e535-4eba-80f7-2be22c343e50",
+                  "version": "KqlParameterItem/1.0",
+                  "name": "FileActionType",
+                  "label": "Action Type",
+                  "type": 2,
+                  "isRequired": true,
+                  "isGlobal": true,
+                  "multiSelect": true,
+                  "quote": "'",
+                  "delimiter": ",",
+                  "query": "DeviceFileEvents\r\n| project ActionType | distinct ActionType\r\n| order by ActionType asc",
+                  "crossComponentResources": [
+                    "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+                  ],
+                  "typeSettings": {
+                    "additionalResourceOptions": [
+                      "value::all"
+                    ],
+                    "selectAllValue": "*",
+                    "showDefault": false
+                  },
+                  "timeContext": {
+                    "durationMs": 2592000000
+                  },
+                  "timeContextFromParameter": "TimeRange",
+                  "defaultValue": "value::all",
+                  "queryType": 0,
+                  "resourceType": "microsoft.operationalinsights/workspaces"
+                }
+              ],
+              "style": "pills",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces"
+            },
+            "name": "parameters - 5 - Copy"
+          },
+          {
+            "type": 3,
+            "content": {
+              "version": "KqlItem/1.0",
+              "query": "DeviceFileEvents \r\n| where FolderPath == \"C:\\\\autoexec.bat\"\r\nor FolderPath == \"C:\\\\boot.ini\"\r\nor FolderPath == \"C:\\\\config.sys\"\r\nor FolderPath == \"C:\\\\Program Files\\\\Microsoft Security Client\\\\msseces.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\explorer.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\regedit.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\system.ini\"\r\nor FolderPath == \"C:\\\\Windows\\\\System32\\\\userinit.exe\"\r\nor FolderPath == \"C:\\\\Windows\\\\win.ini\"\r\n| where DeviceName in ({DeviceName}) or '*' in({DeviceName})\r\n| where ActionType in ({FileActionType}) or '*' in({FileActionType})\r\n| project Timestamp, DeviceName, ActionType, FolderPath, PreviousFolderPath, FileName, PreviousFileName, FileSize, InitiatingProcessFileName, InitiatingProcessId, InitiatingProcessFolderPath, InitiatingProcessAccountDomain, InitiatingProcessAccountName, InitiatingProcessAccountObjectId, InitiatingProcessAccountUpn, InitiatingProcessParentFileName, InitiatingProcessCommandLine",
+              "size": 0,
+              "showAnalytics": true,
+              "timeContextFromParameter": "TimeRange",
+              "showExportToExcel": true,
+              "exportToExcelOptions": "all",
+              "queryType": 0,
+              "resourceType": "microsoft.operationalinsights/workspaces",
+              "crossComponentResources": [
+                "/subscriptions/d1d8779d-38d7-4f06-91db-9cbc8de0176f/resourceGroups/SOC/providers/Microsoft.OperationalInsights/workspaces/CyberSecuritySOC"
+              ]
+            },
+            "name": "query - 2",
+            "styleSettings": {
+              "showBorder": true
+            }
+          }
+        ]
+      },
+      "name": "File Changes",
+      "styleSettings": {
+        "padding": "10px",
+        "showBorder": true
+      }
+    }
+  ],
+  "fallbackResourceIds": [
+    "Azure Monitor"
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
